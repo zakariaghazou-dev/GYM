@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GYM SEFROU – La 1ère Destination Sportive</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- React + ReactDOM CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- Babel CDN -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root {
+      --lime: #ccff00;
+      --lime-dim: rgba(204,255,0,0.12);
+      --lime-border: rgba(204,255,0,0.25);
+      --black: #080808;
+      --dark: #0f0f0f;
+      --card: #131313;
+      --card2: #1a1a1a;
+      --text: #e8e8e8;
+      --muted: #777;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); font-family: 'Barlow', sans-serif; color: var(--text); }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: var(--lime); border-radius: 2px; }
+
+    /* ── Fonts ── */
+    .font-display { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.03em; }
+    .font-cond    { font-family: 'Barlow Condensed', sans-serif; }
+    .font-body    { font-family: 'Barlow', sans-serif; }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes bounceDot {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(204,255,0,0.4); }
+      50%      { box-shadow: 0 0 0 10px rgba(204,255,0,0); }
+    }
+    @keyframes scanLine {
+      from { transform: translateY(-100%); }
+      to   { transform: translateY(100vh); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes rotateIn {
+      from { opacity: 0; transform: rotate(-6deg) scale(0.94); }
+      to   { opacity: 1; transform: rotate(0) scale(1); }
+    }
+    @keyframes slideRight {
+      from { opacity: 0; transform: translateX(-30px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes numberCount {
+      from { opacity: 0; transform: scale(0.7); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .anim-up   { animation: fadeUp 0.75s cubic-bezier(.22,1,.36,1) forwards; opacity: 0; }
+    .anim-in   { animation: fadeIn 0.6s ease forwards; opacity: 0; }
+    .anim-stat { animation: numberCount 0.6s cubic-bezier(.34,1.56,.64,1) forwards; opacity: 0; }
+
+    /* ── Navbar ── */
+    .nav-glass {
+      background: transparent;
+      transition: all 0.35s cubic-bezier(.22,1,.36,1);
+    }
+    .nav-glass.scrolled {
+      background: rgba(8,8,8,0.93);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(204,255,0,0.12);
+    }
+    .nav-link {
+      cursor: pointer;
+      position: relative;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--lime);
+      transition: width 0.25s cubic-bezier(.22,1,.36,1);
+    }
+    .nav-link:hover { color: var(--lime); }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── Hero ── */
+    .hero-bg {
+      background-image: url('home-hero.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      background-attachment: fixed;
+    }
+    .hero-overlay {
+      background: linear-gradient(
+        135deg,
+        rgba(8,8,8,0.92) 0%,
+        rgba(8,8,8,0.75) 50%,
+        rgba(10,26,0,0.80) 100%
+      );
+    }
+    .hero-grid {
+      background-image:
+        linear-gradient(rgba(204,255,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(204,255,0,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 16vw, 180px);
+      line-height: 0.88;
+      letter-spacing: -0.01em;
+    }
+    .hero-title .outline {
+      -webkit-text-stroke: 2px var(--lime);
+      color: transparent;
+    }
+    .hero-title .filled { color: var(--lime); }
+    .hero-title .white  { color: #fff; }
+
+    /* Scroll indicator */
+    .scroll-arrow {
+      cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      animation: fadeUp 1s 1.4s forwards; opacity: 0;
+    }
+    .scroll-arrow span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    .arrow-icon {
+      width: 40px; height: 40px;
+      border: 1.5px solid rgba(204,255,0,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      animation: bounceDot 2s ease-in-out infinite;
+    }
+    .arrow-icon:hover { border-color: var(--lime); background: var(--lime-dim); }
+
+    /* ── Stat counters ── */
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      color: var(--lime);
+      line-height: 1;
+    }
+
+    /* ── Buttons ── */
+    .btn-lime {
+      background: var(--lime);
+      color: #080808;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      padding: 14px 36px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-lime::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+      background-size: 200% 100%;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .btn-lime:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(204,255,0,0.35); background: #d4ff1a; }
+    .btn-lime:hover::after { opacity: 1; animation: shimmer 0.7s linear; }
+    .btn-lime:active { transform: translateY(0); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--lime);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1.5px solid rgba(204,255,0,0.5);
+      border-radius: 6px;
+      padding: 14px 36px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { background: var(--lime-dim); border-color: var(--lime); transform: translateY(-2px); }
+
+    /* ── Section headers ── */
+    .section-tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1;
+      color: #fff;
+    }
+    .section-sub {
+      font-family: 'Barlow', sans-serif;
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 12px auto 0;
+      line-height: 1.65;
+    }
+
+    /* ── Equipment cards ── */
+    .eq-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1), border-color 0.3s, box-shadow 0.3s;
+      cursor: default;
+    }
+    .eq-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(204,255,0,0.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(204,255,0,0.1);
+    }
+    .eq-card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(.22,1,.36,1);
+    }
+    .eq-card:hover .eq-card-img {
+      transform: scale(1.04);
+    }
+
+    /* ── Image sections ── */
+    .img-card {
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+    .img-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(.22,1,.36,1); }
+    .img-card:hover img { transform: scale(1.04); }
+    .img-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 60%);
+    }
+
+    /* ── Schedule ── */
+    .day-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.2s;
+    }
+    .day-row:last-child { border-bottom: none; }
+    .day-row:hover { background: rgba(204,255,0,0.04); }
+    .day-row .dot {
+      width: 7px; height: 7px;
+      background: var(--lime);
+      border-radius: 50%;
+      animation: glow 2.5s infinite;
+      flex-shrink: 0;
+    }
+
+    /* ── Pricing ── */
+    .plan-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 32px 28px;
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s;
+      position: relative;
+    }
+    .plan-card:hover { transform: translateY(-8px); }
+    .plan-card.popular {
+      background: linear-gradient(145deg, #141400 0%, #0d1a00 100%);
+      border: 2px solid var(--lime);
+      box-shadow: 0 0 60px rgba(204,255,0,0.12), 0 0 0 1px rgba(204,255,0,0.08);
+    }
+    .plan-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      line-height: 1;
+      color: #fff;
+    }
+    .plan-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #bbb;
+      padding: 6px 0;
+    }
+    .plan-feature .check {
+      width: 18px; height: 18px;
+      background: var(--lime-dim);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Gallery ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 240px 240px;
+      gap: 12px;
+    }
+    .gallery-grid .tall { grid-row: 1 / 3; }
+
+    /* ── Contact ── */
+    .contact-input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 14px 18px;
+      color: #ddd;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .contact-input:focus {
+      border-color: var(--lime);
+      background: rgba(204,255,0,0.04);
+    }
+    .contact-input::placeholder { color: #555; }
+
+    /* ── Glow dot ── */
+    .glow-dot {
+      width: 8px; height: 8px;
+      background: var(--lime);
+      border-radius: 50%;
+      display: inline-block;
+      animation: glow 2.2s infinite;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .desktop-nav { display: none !important; }
+      .menu-toggle { display: flex !important; }
+      .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .gallery-grid .tall { grid-row: auto; }
+      .hero-title { font-size: clamp(64px, 20vw, 120px); }
+    }
+
+    /* ── Stripe bg ── */
+    .stripe-bg {
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 60px,
+        rgba(204,255,0,0.012) 60px,
+        rgba(204,255,0,0.012) 61px
+      );
+    }
+
+    /* ── Logo image ── */
+    .logo-img { height: 38px; width: auto; object-fit: contain; }
+
+    /* ── Bilingual Arabic ── */
+    .ar-text {
+      font-family: 'Barlow', sans-serif;
+      direction: rtl;
+      unicode-bidi: embed;
+      display: block;
+      opacity: 0.72;
+    }
+    .ar-sub {
+      font-size: 0.82em;
+      color: rgba(204,255,0,0.75);
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.01em;
+      direction: rtl;
+      unicode-bidi: embed;
+    }
+    .bilingual-sep {
+      display: inline-block;
+      margin: 0 8px;
+      color: rgba(204,255,0,0.35);
+      font-weight: 300;
+    }
+
+    /* ── Zone cards (À Propos gallery) ── */
+    .zone-card-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.6s cubic-bezier(.22,1,.36,1);
+    }
+    .img-card:hover .zone-card-bg { transform: scale(1.04); }
+    .zone-card-dim {
+      position: absolute;
+      inset: 0;
+      background: rgba(8,8,8,0.45);
+    }
+
+    /* ── Product section ── */
+    .product-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+
+    /* ── Divider ── */
+    .lime-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ─────────────────────────── SVG Icon ─────────────────────────── */
+const PATHS = {
+  dumbbell:   <><path d="M14.4 14.4 9.6 9.6"/><path d="M18.66 5.34a4 4 0 0 0-5.66 0L3 15.34V21h5.66l10-10a4 4 0 0 0 0-5.66z"/><path d="m15 7 2 2"/></>,
+  clock:      <><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>,
+  mappin:     <><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></>,
+  phone:      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.09 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>,
+  mail:       <><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></>,
+  check:      <polyline points="20 6 9 17 4 12"/>,
+  send:       <><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></>,
+  menu:       <><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></>,
+  x:          <><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>,
+  chevronDown:<polyline points="6 9 12 15 18 9"/>,
+  chevronRight:<polyline points="9 18 15 12 9 6"/>,
+  zap:        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>,
+  users:      <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></>,
+  shield:     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>,
+  star:       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>,
+  activity:   <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>,
+  target:     <><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></>,
+  award:      <><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></>,
+  instagram:  <><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></>,
+  facebook:   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>,
+};
+
+const Icon = ({ name, size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+    stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    {PATHS[name]}
+  </svg>
+);
+
+/* ─────────────────── Intersection Observer Hook ─────────────────── */
+function useVisible(threshold = 0.15) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
+    }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+/* ─────────────────────────── Data ─────────────────────────────── */
+const NAV = [
+  { id: "hero",      label: "Accueil" },
+  { id: "about",     label: "À Propos" },
+  { id: "equipment", label: "Équipements" },
+  { id: "schedule",  label: "Horaires" },
+  { id: "offers",    label: "Tarifs" },
+  { id: "contact",   label: "Contact" },
+];
+
+/* ── 4 machines avec photos ── */
+const EQUIPMENT = [
+  {
+    img: "machine1.jpg",
+    name: "Tapis de Course",
+    tag: "Cardio",
+    desc: "Tapis de course dernière génération avec programmes d'entraînement intégrés, écran tactile HD et amortissement intelligent pour protéger vos articulations.",
+  },
+  {
+    img: "machine2.jpg",
+    name: "Presse à Cuisses",
+    tag: "Membres inférieurs",
+    desc: "Machine guidée à charges ajustables pour un travail ciblé des quadriceps, ischio-jambiers et fessiers. Idéale pour tous les niveaux.",
+  },
+  {
+    img: "machine3.jpg",
+    name: "Tirage Vertical",
+    tag: "Dos & épaules",
+    desc: "Appareil à poulie haute pour renforcer le grand dorsal et les épaules. Plusieurs prises disponibles pour varier les angles de travail.",
+  },
+  {
+    img: "machine4.jpg",
+    name: "Cage à Squat",
+    tag: "Full body",
+    desc: "Cage multifonction robuste pour squats, développé couché et soulevé de terre. Équipée de barres de sécurité réglables pour s'entraîner en toute sécurité.",
+  },
+];
+
+const SCHEDULE = [
+  { day: "Lundi",    hours: "6h00 – 23h00" },
+  { day: "Mardi",    hours: "6h00 – 23h00" },
+  { day: "Mercredi", hours: "6h00 – 23h00" },
+  { day: "Jeudi",    hours: "6h00 – 23h00" },
+  { day: "Vendredi", hours: "6h00 – 23h00" },
+  { day: "Samedi",   hours: "8h00 – 22h00" },
+  { day: "Dimanche", hours: "8h00 – 20h00" },
+];
+
+const PLANS = [
+  {
+    name: "Mensuel",
+    price: "299",
+    currency: "MAD",
+    period: "/mois",
+    original: "450",
+    discount: "–33%",
+    popular: false,
+    features: [
+      "Accès illimité à la salle",
+      "Bilan forme initial gratuit",
+      "Casier personnel",
+      "Support coach basique",
+      "Accès vestiaires & douches",
+    ],
+  },
+  {
+    name: "Semestriel",
+    price: "1 299",
+    currency: "MAD",
+    period: "/6 mois",
+    original: "2 000",
+    discount: "–35%",
+    popular: true,
+    features: [
+      "Accès illimité à la salle",
+      "Bilan mensuel inclus",
+      "Programme personnalisé",
+      "Casier personnel premium",
+      "1 séance coach offerte / mois",
+      "Accès prioritaire aux cours",
+    ],
+  },
+  {
+    name: "Annuel",
+    price: "2 199",
+    currency: "MAD",
+    period: "/an",
+    original: "3 600",
+    discount: "–39%",
+    popular: false,
+    features: [
+      "Accès illimité à la salle",
+      "Bilan hebdomadaire",
+      "Programme complet & évolutif",
+      "Casier personnel VIP",
+      "4 séances coach / mois",
+      "Analyse nutritionnelle",
+      "Invités : 2 entrées/mois",
+    ],
+  },
+];
+
+const STATS = [
+  { value: "500+", label: "Membres actifs" },
+  { value: "15+",  label: "Années d'expérience" },
+  { value: "20+",  label: "Machines cardio" },
+  { value: "98%",  label: "Satisfaction client" },
+];
+
+/* ─────────────────────────── App ─────────────────────────────── */
+function App() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [formSent, setFormSent] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  const scrollTo = useCallback((id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormSent(true);
+    setForm({ name: "", email: "", phone: "", message: "" });
+    setTimeout(() => setFormSent(false), 6000);
+  };
+
+  return (
+    <div style={{ background: "var(--black)", minHeight: "100vh" }}>
+
+      {/* ─── NAVBAR ─────────────────────────────────────────────── */}
+      <nav className={`nav-glass ${scrolled ? "scrolled" : ""}`}
+        style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
+                 display: "flex", alignItems: "center", justifyContent: "space-between",
+                 height: 68, padding: "0 5%" }}>
+
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}
+             onClick={() => scrollTo("hero")}>
+          <img src="logo.png" alt="GYM SEFROU" className="logo-img"
+            onError={e => {
+              e.target.style.display = "none";
+              e.target.nextSibling.style.display = "flex";
+            }}
+          />
+          <div style={{ display: "none", width: 36, height: 36, background: "var(--lime)",
+                        borderRadius: 7, alignItems: "center", justifyContent: "center" }}>
+            <Icon name="dumbbell" size={20} color="#080808" />
+          </div>
+          <span className="font-cond"
+            style={{ fontWeight: 800, fontSize: 20, letterSpacing: 1, color: "#fff" }}>
+            GYM <span style={{ color: "var(--lime)" }}>SEFROU</span>
+          </span>
+        </div>
+
+        {/* Desktop nav */}
+        <div className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: 32 }}>
+          {NAV.map(n => (
+            <span key={n.id} className="nav-link" onClick={() => scrollTo(n.id)}>{n.label}</span>
+          ))}
+          <button className="btn-lime" style={{ padding: "10px 24px", fontSize: 14 }}
+            onClick={() => scrollTo("contact")}>
+            Rejoindre
+          </button>
+        </div>
+
+        {/* Hamburger */}
+        <button className="menu-toggle"
+          style={{ background: "none", border: "1px solid rgba(255,255,255,0.15)",
+                   borderRadius: 6, padding: 8, cursor: "pointer", display: "none",
+                   color: "#fff", alignItems: "center", justifyContent: "center" }}
+          onClick={() => setMenuOpen(o => !o)}>
+          <Icon name={menuOpen ? "x" : "menu"} size={20} color="#fff" />
+        </button>
+      </nav>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div style={{ position: "fixed", top: 68, left: 0, right: 0, zIndex: 190,
+                      background: "rgba(8,8,8,0.97)", backdropFilter: "blur(20px)",
+                      borderBottom: "1px solid rgba(204,255,0,0.15)", padding: "1.5rem 5%" }}>
+          {NAV.map(n => (
+            <div key={n.id} onClick={() => scrollTo(n.id)}
+              style={{ padding: "14px 0", borderBottom: "1px solid rgba(255,255,255,0.05)",
+                       fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+                       fontSize: 18, color: "#ddd", cursor: "pointer",
+                       letterSpacing: "0.05em", textTransform: "uppercase" }}>
+              {n.label}
+            </div>
+          ))}
+          <button className="btn-lime" style={{ width: "100%", marginTop: 16 }}
+            onClick={() => scrollTo("contact")}>
+            Rejoindre maintenant
+          </button>
+        </div>
+      )}
+
+      {/* ─── HERO ───────────────────────────────────────────────── */}
+      <section id="hero" className="hero-bg"
+        style={{ minHeight: "100vh", position: "relative", display: "flex",
+                 alignItems: "center", overflow: "hidden" }}>
+
+        {/* Overlays */}
+        <div className="hero-overlay" style={{ position: "absolute", inset: 0, zIndex: 1 }} />
+        <div className="hero-grid" style={{ position: "absolute", inset: 0, zIndex: 2, opacity: 0.6 }} />
+        {/* Lime glow orb */}
+        <div style={{ position: "absolute", top: "20%", right: "10%", zIndex: 2,
+                      width: 500, height: 500, borderRadius: "50%", opacity: 0.06,
+                      background: "radial-gradient(circle, var(--lime) 0%, transparent 70%)" }} />
+
+        {/* Content */}
+        <div style={{ position: "relative", zIndex: 3, width: "100%",
+                      maxWidth: 1100, margin: "0 auto", padding: "120px 5% 100px" }}>
+
+          {/* Badge */}
+          <div className="anim-up" style={{ animationDelay: "0.1s", marginBottom: 28 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8,
+                           background: "rgba(204,255,0,0.1)",
+                           border: "1px solid rgba(204,255,0,0.3)",
+                           borderRadius: 100, padding: "6px 16px" }}>
+              <span className="glow-dot" />
+              <span className="font-cond"
+                style={{ color: "var(--lime)", fontSize: 13, fontWeight: 700, letterSpacing: 2 }}>
+                LA 1ÈRE DESTINATION SPORTIVE À SEFROU
+                <span className="bilingual-sep">|</span>
+                <span style={{ letterSpacing: 0.5, fontWeight: 700 }}>الوجهة الرياضية الأولى بصفرو</span>
+              </span>
+            </span>
+          </div>
+
+          {/* Title */}
+          <div className="anim-up" style={{ animationDelay: "0.2s" }}>
+            <h1 className="hero-title">
+              <span className="white">GYM</span><br/>
+              <span className="filled">SEFROU</span>
+            </h1>
+          </div>
+
+          {/* Subtitle */}
+          <div className="anim-up" style={{ animationDelay: "0.4s", maxWidth: 560, marginTop: 24 }}>
+            <p className="font-cond"
+              style={{ fontSize: "clamp(18px, 3vw, 26px)", fontWeight: 600,
+                       color: "rgba(255,255,255,0.85)", marginBottom: 14, lineHeight: 1.3 }}>
+              Forgez votre corps. Dépassez vos limites.
+              <span className="ar-text" style={{ fontSize: "0.88em", marginTop: 4, color: "rgba(255,255,255,0.65)" }}>
+                اصنع جسدك. تخطَّ حدودك.
+              </span>
+            </p>
+            <p className="font-body"
+              style={{ fontSize: 16, color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>
+              Rejoignez la communauté Sefrou Gym et transformez votre corps avec nos équipements 
+              de classe mondiale et nos coachs certifiés.
+              <span className="ar-text" style={{ fontSize: 14, marginTop: 6, color: "rgba(255,255,255,0.4)" }}>
+                انضم إلى مجتمع صفرو جيم وحوّل جسدك بفضل أجهزتنا العالمية ومدربينا المعتمدين.
+              </span>
+            </p>
+          </div>
+
+          {/* CTAs → pointent vers #contact */}
+          <div className="anim-up" style={{ animationDelay: "0.6s",
+               display: "flex", gap: 14, flexWrap: "wrap", marginTop: 36 }}>
+            <button className="btn-lime" onClick={() => scrollTo("contact")}>
+              Commencer maintenant
+            </button>
+            <button className="btn-ghost" onClick={() => scrollTo("about")}>
+              Découvrir la salle
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div className="anim-up" style={{ animationDelay: "0.85s",
+               display: "flex", gap: 0, marginTop: 60, flexWrap: "wrap" }}>
+            {STATS.map((s, i) => (
+              <div key={i} style={{ padding: "0 32px 0 0", borderRight: i < STATS.length - 1 ? "1px solid rgba(255,255,255,0.12)" : "none",
+                                    marginRight: i < STATS.length - 1 ? 32 : 0,
+                                    marginBottom: 16 }}>
+                <div className="stat-num">{s.value}</div>
+                <div className="font-body" style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Hero image (right side, desktop) */}
+        <div style={{ position: "absolute", right: 0, bottom: 0, top: 0, zIndex: 2,
+                      width: "40%", overflow: "hidden", display: "flex",
+                      alignItems: "flex-end", justifyContent: "center" }}
+             className="desktop-nav">
+          <img src="hero-image.jpg" alt="Athlete"
+            style={{ width: "100%", height: "90%", objectFit: "cover",
+                     objectPosition: "center top",
+                     maskImage: "linear-gradient(to left, rgba(0,0,0,0.8) 30%, transparent 100%)",
+                     WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,0.8) 30%, transparent 100%)" }}
+            onError={e => e.target.style.display = "none"}
+          />
+        </div>
+
+        {/* Scroll arrow */}
+        <div className="scroll-arrow" style={{ position: "absolute", bottom: 36, left: "50%",
+               transform: "translateX(-50%)", zIndex: 10 }}
+             onClick={() => scrollTo("about")}>
+          <span>Défiler</span>
+          <div className="arrow-icon">
+            <Icon name="chevronDown" size={18} color="var(--lime)" />
+          </div>
+        </div>
+      </section>
+
+      <div className="lime-divider" />
+
+      {/* ─── ABOUT / GALLERY ────────────────────────────────────── */}
+      <AboutSection scrollTo={scrollTo} />
+
+      {/* ─── EQUIPMENT ──────────────────────────────────────────── */}
+      <EquipmentSection scrollTo={scrollTo} />
+
+      {/* ─── SCHEDULE ───────────────────────────────────────────── */}
+      <ScheduleSection />
+
+      {/* ─── OFFERS ─────────────────────────────────────────────── */}
+      <OffersSection scrollTo={scrollTo} />
+
+      {/* ─── CONTACT ────────────────────────────────────────────── */}
+      <ContactSection
+        form={form} setForm={setForm}
+        formSent={formSent} handleSubmit={handleSubmit} />
+
+      {/* ─── FOOTER ─────────────────────────────────────────────── */}
+      <Footer scrollTo={scrollTo} />
+    </div>
+  );
+}
+
+/* ─────────────────────── About Section ─────────────────────────── */
+function AboutSection({ scrollTo }) {
+  const [ref, visible] = useVisible();
+  return (
+    <section id="about" ref={ref}
+      style={{ padding: "100px 5%", background: "var(--dark)" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto",
+                    display: "grid", gridTemplateColumns: "1fr 1fr",
+                    gap: 64, alignItems: "center" }}>
+
+        {/* Text side */}
+        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateX(-30px)",
+                      transition: "all 0.8s cubic-bezier(.22,1,.36,1)" }}>
+          <span className="section-tag">À Propos <span className="bilingual-sep">|</span> <span style={{ letterSpacing: 0.5 }}>حول النادي</span></span>
+          <h2 className="section-title" style={{ textAlign: "left", marginBottom: 20 }}>
+            PLUS QU'UNE<br/>
+            <span style={{ color: "var(--lime)" }}>SALLE DE SPORT</span>
+            <span className="ar-text" style={{ fontSize: "0.55em", marginTop: 8, color: "#bbb", letterSpacing: 0.5 }}>
+              أكثر من مجرد قاعة رياضة
+            </span>
+          </h2>
+          <p className="font-body" style={{ color: "#888", fontSize: 16, lineHeight: 1.8, marginBottom: 16 }}>
+            Depuis plus de 15 ans, Sefrou Gym est le temple du sport à Sefrou. Nous ne vendons 
+            pas seulement un abonnement — nous vous offrons une transformation complète, 
+            un cadre motivant et une communauté soudée.
+            <span className="ar-text" style={{ fontSize: 14, marginTop: 6, color: "#666" }}>
+              منذ أكثر من 15 عامًا، يُعدّ صفرو جيم معبد الرياضة في المدينة. نحن لا نبيع اشتراكًا فحسب — بل نقدم لك تحولًا شاملًا في بيئة محفزة ومجتمع متماسك.
+            </span>
+          </p>
+          <p className="font-body" style={{ color: "#888", fontSize: 16, lineHeight: 1.8, marginBottom: 32 }}>
+            Que vous soyez débutant ou athlète confirmé, nos coachs certifiés et nos équipements 
+            de dernière génération vous propulseront vers vos objectifs.
+            <span className="ar-text" style={{ fontSize: 14, marginTop: 6, color: "#666" }}>
+              سواء كنت مبتدئًا أو رياضيًا محترفًا، سيوصلك مدربونا المعتمدون وأجهزتنا المتطورة إلى أهدافك.
+            </span>
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 36 }}>
+            {[
+              { icon: "award",   label: "Coachs Certifiés", val: "10+" },
+              { icon: "users",   label: "Membres Actifs",   val: "500+" },
+              { icon: "target",  label: "Programmes",       val: "15+" },
+              { icon: "zap",     label: "Machines",         val: "35+" },
+            ].map((item, i) => (
+              <div key={i} style={{ background: "var(--card)", border: "1px solid rgba(255,255,255,0.07)",
+                                    borderRadius: 10, padding: "16px 18px",
+                                    display: "flex", alignItems: "center", gap: 12 }}>
+                <div style={{ width: 40, height: 40, background: "var(--lime-dim)",
+                              borderRadius: 8, display: "flex", alignItems: "center",
+                              justifyContent: "center", flexShrink: 0 }}>
+                  <Icon name={item.icon} size={18} color="var(--lime)" />
+                </div>
+                <div>
+                  <div className="font-cond" style={{ color: "var(--lime)", fontSize: 20, fontWeight: 800 }}>{item.val}</div>
+                  <div className="font-body" style={{ color: "#888", fontSize: 12 }}>{item.label}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button className="btn-lime" onClick={() => scrollTo("contact")}>
+            Nous Contacter
+          </button>
+        </div>
+
+        {/* Gallery side */}
+        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateX(30px)",
+                      transition: "all 0.8s 0.2s cubic-bezier(.22,1,.36,1)" }}>
+          <div className="gallery-grid">
+            {/* Zone Musculation – muscle_zone.jpg */}
+            <div className="img-card tall" style={{ height: "100%", background: "#1a1a1a" }}>
+              <div className="zone-card-bg" style={{ backgroundImage: "url('muscle_zone.jpg')" }} />
+              <div className="zone-card-dim" />
+              <div className="img-card-overlay" />
+              <div style={{ position: "absolute", bottom: 16, left: 16, zIndex: 2 }}>
+                <span className="font-cond" style={{ color: "#fff", fontWeight: 700, fontSize: 14, display: "block" }}>Zone Musculation</span>
+                <span className="font-cond ar-sub">منطقة التقوية العضلية</span>
+              </div>
+            </div>
+            {/* Zone Cardio – cardio_zone.jpg */}
+            <div className="img-card" style={{ height: 240, background: "#1a1a1a" }}>
+              <div className="zone-card-bg" style={{ backgroundImage: "url('cardio_zone.jpg')" }} />
+              <div className="zone-card-dim" />
+              <div className="img-card-overlay" />
+              <div style={{ position: "absolute", bottom: 12, left: 14, zIndex: 2 }}>
+                <span className="font-cond" style={{ color: "#fff", fontWeight: 700, fontSize: 14, display: "block" }}>Zone Cardio</span>
+                <span className="font-cond ar-sub">منطقة الكارديو</span>
+              </div>
+            </div>
+            {/* Poids Libres – weights_zone.jpg */}
+            <div className="img-card" style={{ height: 240, background: "#1a1a1a" }}>
+              <div className="zone-card-bg" style={{ backgroundImage: "url('weights_zone.jpg')" }} />
+              <div className="zone-card-dim" />
+              <div className="img-card-overlay" />
+              <div style={{ position: "absolute", bottom: 12, left: 14, zIndex: 2 }}>
+                <span className="font-cond" style={{ color: "#fff", fontWeight: 700, fontSize: 14, display: "block" }}>Poids Libres</span>
+                <span className="font-cond ar-sub">الأوزان الحرة</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────── Equipment Section ─────────────────────────── */
+function EquipmentSection({ scrollTo }) {
+  const [ref, visible] = useVisible();
+  return (
+    <section id="equipment" className="stripe-bg" ref={ref}
+      style={{ padding: "100px 5%", background: "var(--black)" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+
+        <div style={{ textAlign: "center", marginBottom: 64,
+                      opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(20px)",
+                      transition: "all 0.7s cubic-bezier(.22,1,.36,1)" }}>
+          <span className="section-tag">Nos Équipements <span className="bilingual-sep">|</span> <span style={{ letterSpacing: 0.5 }}>أجهزتنا</span></span>
+          <h2 className="section-title">ÉQUIPEMENTS<br/>
+            <span style={{ color: "var(--lime)" }}>DE CLASSE MONDIALE</span>
+            <span className="ar-text" style={{ fontSize: "0.48em", marginTop: 8, color: "#aaa", letterSpacing: 0.5 }}>
+              معدات بمستوى عالمي
+            </span>
+          </h2>
+          <p className="section-sub">
+            Plus de 35 machines et équipements dernière génération pour un entraînement optimal, 
+            quels que soient vos objectifs.
+            <span className="ar-text" style={{ fontSize: "0.9em", marginTop: 6, color: "#555" }}>
+              أكثر من 35 جهازًا ومعدةً من الجيل الأحدث لتدريب مثالي، مهما كانت أهدافك.
+            </span>
+          </p>
+        </div>
+
+        {/* 4 cards – 2 columns on desktop */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
+          {EQUIPMENT.map((item, i) => (
+            <div key={i} className="eq-card"
+              style={{ opacity: visible ? 1 : 0,
+                       transform: visible ? "none" : "translateY(30px)",
+                       transition: `all 0.6s ${0.1 * i}s cubic-bezier(.22,1,.36,1)` }}>
+
+              {/* Machine photo */}
+              <div style={{ position: "relative", overflow: "hidden" }}>
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className="eq-card-img"
+                  onError={e => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+                {/* Fallback placeholder */}
+                <div style={{ display: "none", height: 200, background: "var(--card2)",
+                              alignItems: "center", justifyContent: "center" }}>
+                  <Icon name="dumbbell" size={40} color="rgba(204,255,0,0.2)" />
+                </div>
+                {/* Tag overlay */}
+                <span className="font-cond"
+                  style={{ position: "absolute", top: 12, right: 12,
+                           background: "rgba(204,255,0,0.15)",
+                           border: "1px solid var(--lime-border)",
+                           color: "var(--lime)", fontSize: 11, fontWeight: 700,
+                           padding: "4px 10px", borderRadius: 100, letterSpacing: 1,
+                           backdropFilter: "blur(6px)" }}>
+                  {item.tag}
+                </span>
+              </div>
+
+              {/* Text */}
+              <div style={{ padding: "20px 22px 24px" }}>
+                <h3 className="font-cond"
+                  style={{ color: "#fff", fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
+                  {item.name}
+                </h3>
+                <p className="font-body" style={{ color: "#777", fontSize: 14, lineHeight: 1.7 }}>
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA strip */}
+        <div style={{ marginTop: 50, textAlign: "center" }}>
+          <button className="btn-lime" onClick={() => scrollTo("contact")}>
+            Rejoindre et découvrir
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────── Schedule Section ─────────────────────────── */
+function ScheduleSection() {
+  const [ref, visible] = useVisible();
+  const today = new Date().toLocaleDateString("fr-FR", { weekday: "long" });
+  const todayCapitalized = today.charAt(0).toUpperCase() + today.slice(1);
+
+  return (
+    <section id="schedule" ref={ref}
+      style={{ padding: "100px 5%", background: "var(--dark)" }}>
+      <div style={{ maxWidth: 800, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 56,
+                      opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(20px)",
+                      transition: "all 0.7s cubic-bezier(.22,1,.36,1)" }}>
+          <span className="section-tag">Horaires <span className="bilingual-sep">|</span> <span style={{ letterSpacing: 0.5 }}>مواعيد العمل</span></span>
+          <h2 className="section-title">TOUJOURS<br/>
+            <span style={{ color: "var(--lime)" }}>OUVERTS POUR VOUS</span>
+            <span className="ar-text" style={{ fontSize: "0.48em", marginTop: 8, color: "#aaa", letterSpacing: 0.5 }}>
+              دائمًا مفتوحون من أجلك
+            </span>
+          </h2>
+          <p className="section-sub">7 jours sur 7, nous sommes là pour vous accompagner dans votre transformation.
+            <span className="ar-text" style={{ fontSize: "0.9em", marginTop: 6, color: "#555" }}>
+              7 أيام في الأسبوع، نحن هنا لمرافقتك في مسيرة تحولك.
+            </span>
+          </p>
+        </div>
+
+        <div style={{ background: "var(--card)", borderRadius: 16,
+                      border: "1px solid rgba(255,255,255,0.07)", overflow: "hidden",
+                      opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(24px)",
+                      transition: "all 0.7s 0.15s cubic-bezier(.22,1,.36,1)" }}>
+          {SCHEDULE.map((d, i) => {
+            const isToday = todayCapitalized.startsWith(d.day.slice(0,4));
+            return (
+              <div key={i} className="day-row"
+                style={{ background: isToday ? "rgba(204,255,0,0.06)" : "transparent" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <span className="dot" />
+                  <span className="font-cond"
+                    style={{ fontSize: 17, fontWeight: isToday ? 800 : 600,
+                             color: isToday ? "var(--lime)" : "#ddd",
+                             letterSpacing: "0.03em" }}>
+                    {d.day}
+                  </span>
+                  {isToday && (
+                    <span style={{ background: "var(--lime)", color: "#080808",
+                                   fontSize: 10, fontWeight: 800, padding: "2px 8px",
+                                   borderRadius: 100, fontFamily: "'Barlow Condensed', sans-serif",
+                                   letterSpacing: 1 }}>
+                      AUJOURD'HUI
+                    </span>
+                  )}
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Icon name="clock" size={14} color="var(--lime)" />
+                  <span className="font-cond"
+                    style={{ color: "var(--lime)", fontWeight: 700, fontSize: 16, letterSpacing: "0.04em" }}>
+                    {d.hours}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className="font-body"
+          style={{ color: "#444", fontSize: 12, textAlign: "center", marginTop: 14 }}>
+          * Horaires susceptibles d'être modifiés lors des jours fériés marocains.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────── Offers Section ────────────────────────────── */
+function OffersSection({ scrollTo }) {
+  const [ref, visible] = useVisible();
+
+  return (
+    <section id="offers" ref={ref}
+      style={{ padding: "100px 5%", background: "var(--black)" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+
+        <div style={{ textAlign: "center", marginBottom: 64,
+                      opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(20px)",
+                      transition: "all 0.7s cubic-bezier(.22,1,.36,1)" }}>
+          <span style={{ display: "inline-block", background: "var(--lime)", color: "#080808",
+                         fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800,
+                         fontSize: 11, letterSpacing: 3, padding: "5px 16px",
+                         borderRadius: 100, textTransform: "uppercase", marginBottom: 16 }}>
+            Offre limitée
+          </span>
+          <h2 className="section-title">NOS TARIFS<br/>
+            <span style={{ color: "var(--lime)" }}>IMBATTABLES</span>
+            <span className="ar-text" style={{ fontSize: "0.48em", marginTop: 8, color: "#aaa", letterSpacing: 0.5 }}>
+              أسعارنا لا تُقاوم
+            </span>
+          </h2>
+          <p className="section-sub">
+            Investissez dans votre santé avec nos formules flexibles. 
+            Plus vous vous engagez, plus vous économisez.
+            <span className="ar-text" style={{ fontSize: "0.9em", marginTop: 6, color: "#555" }}>
+              استثمر في صحتك مع باقاتنا المرنة. كلما التزمت أكثر، كلما وفّرت أكثر.
+            </span>
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
+                      gap: 20, alignItems: "start" }}>
+          {PLANS.map((plan, i) => (
+            <div key={i} className={`plan-card ${plan.popular ? "popular" : ""}`}
+              style={{ opacity: visible ? 1 : 0,
+                       transform: visible ? "none" : "translateY(30px)",
+                       transition: `all 0.6s ${0.1 * i}s cubic-bezier(.22,1,.36,1)` }}>
+
+              {plan.popular && (
+                <div style={{ position: "absolute", top: -14, left: "50%",
+                              transform: "translateX(-50%)",
+                              background: "var(--lime)", color: "#080808",
+                              fontFamily: "'Barlow Condensed', sans-serif",
+                              fontWeight: 800, fontSize: 11, padding: "5px 20px",
+                              borderRadius: 100, whiteSpace: "nowrap", letterSpacing: 1 }}>
+                  ⭐ LE PLUS POPULAIRE
+                </div>
+              )}
+
+              {/* Header */}
+              <div style={{ marginBottom: 24 }}>
+                <div style={{ display: "flex", justifyContent: "space-between",
+                              alignItems: "center", marginBottom: 12 }}>
+                  <span className="font-cond" style={{ color: "#aaa", fontSize: 15, fontWeight: 600,
+                                                       letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                    {plan.name}
+                  </span>
+                  <span style={{ background: "rgba(204,255,0,0.15)", color: "var(--lime)",
+                                 fontFamily: "'Barlow Condensed', sans-serif",
+                                 fontSize: 12, fontWeight: 800, padding: "3px 10px",
+                                 borderRadius: 100, letterSpacing: 1 }}>
+                    {plan.discount}
+                  </span>
+                </div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                  <span className="plan-price">{plan.price}</span>
+                  <div>
+                    <div className="font-cond" style={{ color: "var(--lime)", fontSize: 14, fontWeight: 800 }}>
+                      {plan.currency}
+                    </div>
+                    <div className="font-body" style={{ color: "#555", fontSize: 12 }}>{plan.period}</div>
+                  </div>
+                </div>
+                <div className="font-body"
+                  style={{ color: "#444", fontSize: 12, textDecoration: "line-through", marginTop: 4 }}>
+                  {plan.original} {plan.currency}
+                </div>
+              </div>
+
+              {/* Features */}
+              <div style={{ marginBottom: 28, display: "flex", flexDirection: "column", gap: 6 }}>
+                {plan.features.map((f, j) => (
+                  <div key={j} className="plan-feature">
+                    <div className="check"><Icon name="check" size={10} color="var(--lime)" /></div>
+                    {f}
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA → #contact */}
+              <button
+                style={{ width: "100%", padding: "15px", borderRadius: 8,
+                         fontFamily: "'Barlow Condensed', sans-serif",
+                         fontWeight: 800, fontSize: 16, cursor: "pointer",
+                         letterSpacing: "0.06em", textTransform: "uppercase",
+                         background: plan.popular ? "var(--lime)" : "transparent",
+                         color: plan.popular ? "#080808" : "var(--lime)",
+                         border: plan.popular ? "2px solid var(--lime)" : "2px solid rgba(204,255,0,0.4)",
+                         transition: "all 0.2s" }}
+                onMouseOver={e => { e.currentTarget.style.background = "var(--lime)"; e.currentTarget.style.color = "#080808"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseOut={e => { if (!plan.popular) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--lime)"; } e.currentTarget.style.transform = "none"; }}
+                onClick={() => scrollTo("contact")}>
+                S'abonner maintenant
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Guarantee strip */}
+        <div style={{ marginTop: 40, background: "var(--card)",
+                      border: "1px solid rgba(255,255,255,0.07)",
+                      borderRadius: 12, padding: "20px 28px",
+                      display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+          <Icon name="shield" size={24} color="var(--lime)" />
+          <div>
+            <div className="font-cond" style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>
+              Satisfaction Garantie
+            </div>
+            <div className="font-body" style={{ color: "#666", fontSize: 13 }}>
+              Si vous n'êtes pas satisfait dans les 7 premiers jours, nous vous remboursons intégralement.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────── Contact Section ───────────────────────────── */
+function ContactSection({ form, setForm, formSent, handleSubmit }) {
+  const [ref, visible] = useVisible();
+
+  return (
+    <section id="contact" ref={ref} className="stripe-bg"
+      style={{ padding: "100px 5%", background: "var(--dark)" }}>
+      <div style={{ maxWidth: 1050, margin: "0 auto" }}>
+
+        <div style={{ textAlign: "center", marginBottom: 64,
+                      opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(20px)",
+                      transition: "all 0.7s cubic-bezier(.22,1,.36,1)" }}>
+          <span className="section-tag">Contact <span className="bilingual-sep">|</span> <span style={{ letterSpacing: 0.5 }}>تواصل معنا</span></span>
+          <h2 className="section-title">PRÊT À<br/>
+            <span style={{ color: "var(--lime)" }}>COMMENCER ?</span>
+            <span className="ar-text" style={{ fontSize: "0.48em", marginTop: 8, color: "#aaa", letterSpacing: 0.5 }}>
+              مستعد للبداية؟
+            </span>
+          </h2>
+          <p className="section-sub">
+            Contactez-nous pour toute question sur nos formules, 
+            ou venez nous rendre visite directement à Sefrou.
+            <span className="ar-text" style={{ fontSize: "0.9em", marginTop: 6, color: "#555" }}>
+              تواصل معنا لأي استفسار حول باقاتنا، أو زرنا مباشرةً في صفرو.
+            </span>
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48,
+                      opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(24px)",
+                      transition: "all 0.7s 0.15s cubic-bezier(.22,1,.36,1)" }}>
+
+          {/* Form */}
+          <div>
+            {formSent && (
+              <div style={{ background: "rgba(204,255,0,0.08)",
+                            border: "1px solid rgba(204,255,0,0.35)",
+                            borderRadius: 10, padding: "14px 18px", marginBottom: 20,
+                            color: "var(--lime)", fontSize: 14,
+                            fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700 }}>
+                ✅ Message envoyé avec succès ! Nous vous contacterons très bientôt.
+              </div>
+            )}
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {[
+                { key: "name",  placeholder: "Nom complet",         type: "text"  },
+                { key: "email", placeholder: "Adresse e-mail",      type: "email" },
+                { key: "phone", placeholder: "Numéro de téléphone", type: "tel"   },
+              ].map(({ key, placeholder, type }) => (
+                <input key={key} type={type} placeholder={placeholder} required
+                  className="contact-input"
+                  value={form[key]}
+                  onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
+                />
+              ))}
+              <textarea placeholder="Votre message..." rows={5} required
+                className="contact-input"
+                style={{ resize: "vertical" }}
+                value={form.message}
+                onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+              />
+              <button type="submit" className="btn-lime"
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                <Icon name="send" size={16} color="#080808" />
+                Envoyer le message
+              </button>
+            </form>
+          </div>
+
+          {/* Info */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+            {[
+              { icon: "mappin", title: "Notre adresse", text: "Sefrou, Maroc\nQuartier populaire, Avenue Mohammed V" },
+              { icon: "phone",  title: "Téléphone",     text: "+212 6XX-XXXXXX" },
+              { icon: "mail",   title: "E-mail",        text: "contact@gymsefrou.ma" },
+              { icon: "clock",  title: "Horaires",      text: "Lun – Ven : 6h00 – 23h00\nSam : 8h00 – 22h00 | Dim : 8h00 – 20h00" },
+            ].map((item, i) => (
+              <div key={i} style={{ display: "flex", gap: 16, padding: "18px 0",
+                                    borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                <div style={{ width: 44, height: 44, background: "var(--lime-dim)",
+                              borderRadius: 10, display: "flex", alignItems: "center",
+                              justifyContent: "center", flexShrink: 0 }}>
+                  <Icon name={item.icon} size={20} color="var(--lime)" />
+                </div>
+                <div>
+                  <div className="font-cond"
+                    style={{ color: "#aaa", fontSize: 12, fontWeight: 700,
+                             letterSpacing: 2, textTransform: "uppercase", marginBottom: 4 }}>
+                    {item.title}
+                  </div>
+                  <div className="font-body"
+                    style={{ color: "#ccc", fontSize: 14, lineHeight: 1.6,
+                             whiteSpace: "pre-line" }}>
+                    {item.text}
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Map placeholder */}
+            <div style={{ marginTop: 20, background: "var(--card)", borderRadius: 12,
+                          border: "1px solid rgba(255,255,255,0.07)",
+                          height: 160, position: "relative", overflow: "hidden",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          flexDirection: "column", gap: 8 }}>
+              <div style={{ position: "absolute", inset: 0,
+                            backgroundImage: "radial-gradient(circle at 50% 50%, rgba(204,255,0,0.06) 0%, transparent 60%), repeating-linear-gradient(0deg, transparent, transparent 25px, rgba(204,255,0,0.03) 25px, rgba(204,255,0,0.03) 26px), repeating-linear-gradient(90deg, transparent, transparent 25px, rgba(204,255,0,0.03) 25px, rgba(204,255,0,0.03) 26px)" }} />
+              <Icon name="mappin" size={30} color="var(--lime)" />
+              <span className="font-cond" style={{ color: "#fff", fontWeight: 800, fontSize: 16, letterSpacing: 1 }}>
+                GYM SEFROU
+              </span>
+              <span className="font-body" style={{ color: "#555", fontSize: 12 }}>Sefrou, Maroc 🇲🇦</span>
+            </div>
+
+            {/* Social links */}
+            <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
+              {[
+                { icon: "instagram", label: "Instagram" },
+                { icon: "facebook",  label: "Facebook" },
+                { icon: "phone",     label: "WhatsApp" },
+              ].map((s, i) => (
+                <button key={i}
+                  style={{ flex: 1, padding: "10px 0",
+                           background: "var(--card)", border: "1px solid rgba(255,255,255,0.07)",
+                           borderRadius: 8, cursor: "pointer",
+                           display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                           fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+                           fontSize: 13, color: "#aaa", letterSpacing: "0.04em",
+                           transition: "all 0.2s" }}
+                  onMouseOver={e => { e.currentTarget.style.borderColor = "rgba(204,255,0,0.4)"; e.currentTarget.style.color = "var(--lime)"; }}
+                  onMouseOut={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"; e.currentTarget.style.color = "#aaa"; }}>
+                  <Icon name={s.icon} size={15} color="currentColor" />
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────── Footer ────────────────────────────────── */
+function Footer({ scrollTo }) {
+  return (
+    <footer style={{ background: "#050505", borderTop: "1px solid rgba(204,255,0,0.08)",
+                     padding: "40px 5% 28px" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr",
+                      gap: 40, marginBottom: 40 }}>
+          {/* Brand */}
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <div style={{ width: 36, height: 36, background: "var(--lime)",
+                            borderRadius: 7, display: "flex", alignItems: "center",
+                            justifyContent: "center" }}>
+                <Icon name="dumbbell" size={18} color="#080808" />
+              </div>
+              <span className="font-cond" style={{ fontWeight: 800, fontSize: 20, color: "#fff", letterSpacing: 1 }}>
+                GYM <span style={{ color: "var(--lime)" }}>SEFROU</span>
+              </span>
+            </div>
+            <p className="font-body" style={{ color: "#555", fontSize: 14, lineHeight: 1.7, maxWidth: 280 }}>
+              La 1ère destination sportive à Sefrou. Rejoignez notre communauté et transformez 
+              votre vie grâce au sport.
+              <span className="ar-text" style={{ fontSize: 13, marginTop: 6, color: "#444" }}>
+                الوجهة الرياضية الأولى بصفرو. انضم إلى مجتمعنا وغيّر حياتك بالرياضة.
+              </span>
+            </p>
+          </div>
+
+          {/* Navigation */}
+          <div>
+            <div className="font-cond"
+              style={{ color: "var(--lime)", fontSize: 12, fontWeight: 700,
+                       letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>
+              Navigation
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {NAV.map(n => (
+                <span key={n.id} onClick={() => scrollTo(n.id)}
+                  className="font-body"
+                  style={{ color: "#555", fontSize: 14, cursor: "pointer", transition: "color 0.2s" }}
+                  onMouseOver={e => e.target.style.color = "var(--lime)"}
+                  onMouseOut={e => e.target.style.color = "#555"}>
+                  {n.label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Hours */}
+          <div>
+            <div className="font-cond"
+              style={{ color: "var(--lime)", fontSize: 12, fontWeight: 700,
+                       letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>
+              Horaires
+            </div>
+            <div className="font-body" style={{ color: "#555", fontSize: 14, lineHeight: 1.9 }}>
+              Lun – Ven<br/>
+              <span style={{ color: "#888" }}>6h00 – 23h00</span><br/>
+              Samedi<br/>
+              <span style={{ color: "#888" }}>8h00 – 22h00</span><br/>
+              Dimanche<br/>
+              <span style={{ color: "#888" }}>8h00 – 20h00</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="lime-divider" />
+        <div style={{ paddingTop: 20, display: "flex", justifyContent: "space-between",
+                      alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+          <span className="font-body" style={{ color: "#333", fontSize: 13 }}>
+            © 2025 GYM SEFROU — Tous droits réservés.
+          </span>
+          <span className="font-body" style={{ color: "#333", fontSize: 13 }}>
+            Conçu avec <span style={{ color: "var(--lime)" }}>♥</span> à Sefrou, Maroc 🇲🇦
+          </span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─────────────── Mount ─────────────── */
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>
