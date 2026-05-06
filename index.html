@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Gym For You - صالة رياضية احترافية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff3e3e;
+            --primary-dark: #e03535;
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --card-bg: #111111;
+            --card-border: #1a1a1a;
+            --text: #e0e0e0;
+            --text-muted: #888888;
+            --gold: #d4af37;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            direction: rtl;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           HEADER / NAVIGATION
+        ============================================ */
+        header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+        }
+
+        .logo span {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+
+        .logo span span {
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ============================================
+           HERO SECTION
+        ============================================ */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-mobile-bg {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.85));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 16px 50px;
+            background: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .hero-btn:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 62, 62, 0.3);
+        }
+
+        /* ============================================
+           SECTIONS COMMON
+        ============================================ */
+        section {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 1;
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+
+        .section-title h2 span {
+            color: var(--primary);
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-title .line {
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ============================================
+           EQUIPMENT SECTION
+        ============================================ */
+        #equipment {
+            background: var(--darker);
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text);
+            cursor: pointer;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .equipment-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .equipment-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(255, 62, 62, 0.15);
+        }
+
+        .equipment-card .img-placeholder {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        .equipment-card .img-placeholder i {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .equipment-card .img-placeholder .placeholder-label {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .equipment-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .equipment-card .card-info {
+            padding: 20px;
+        }
+
+        .equipment-card .card-info h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--white);
+        }
+
+        .equipment-card .card-info .category-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 62, 62, 0.15);
+            color: var(--primary);
+            font-size: 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* Hide/show cards */
+        .equipment-card.hide-card {
+            display: none;
+        }
+
+        .equipment-card.show-card {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        /* ============================================
+           PRICING SECTION
+        ============================================ */
+        #plans {
+            background: var(--dark);
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(255, 62, 62, 0.1);
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--gold);
+            transform: scale(1.05);
+            background: linear-gradient(180deg, var(--card-bg) 0%, rgba(212, 175, 55, 0.05) 100%);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .pricing-card .badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: var(--dark);
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .pricing-card .save {
+            color: #4ade80;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .pricing-card .features {
+            list-style: none;
+            margin: 20px 0;
+            text-align: right;
+            padding: 0;
+        }
+
+        .pricing-card .features li {
+            padding: 8px 0;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-card .features li i {
+            color: var(--primary);
+        }
+
+        .pricing-card .pricing-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .pricing-card .pricing-btn:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .pricing-card.featured .pricing-btn {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--dark);
+        }
+
+        .pricing-card.featured .pricing-btn:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        /* ============================================
+           REGISTRATION SECTION
+        ============================================ */
+        #register {
+            background: var(--darker);
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .reg-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 50px 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--white);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--dark);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 62, 62, 0.1);
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: #25D366;
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+        }
+
+        /* ============================================
+           MAP SECTION
+        ============================================ */
+        #location {
+            padding: 0;
+            background: var(--dark);
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        #location .section-title {
+            padding-top: 80px;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(80%) invert(10%);
+        }
+
+        /* ============================================
+           FOOTER
+        ============================================ */
+        footer {
+            background: var(--darker);
+            padding: 50px 40px 20px;
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+
+        footer .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        footer .footer-logo span {
+            color: var(--primary);
+        }
+
+        footer p {
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        footer .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        footer .social-links a {
+            width: 45px;
+            height: 45px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        footer .social-links a:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        footer .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--card-border);
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           FLOATING WHATSAPP
+        ============================================ */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 999;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.8rem;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            animation: pulse 2s infinite;
+        }
+
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+            70%  { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* ============================================
+           SCROLL TO TOP
+        ============================================ */
+        .scroll-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 999;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 20px;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 70px;
+                right: 0;
+                width: 100%;
+                background: rgba(5, 5, 5, 0.98);
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                border-bottom: 1px solid var(--card-border);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .hero-video {
+                display: none;
+            }
+
+            .hero-mobile-bg {
+                display: block;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .pricing-card.featured:hover {
+                transform: scale(1) translateY(-10px);
+            }
+
+            .reg-form {
+                padding: 30px 20px;
+            }
+
+            .floating-whatsapp {
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .filter-buttons {
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .equipment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         HEADER / NAVIGATION
+    ============================================ -->
+    <header id="header">
+        <div class="logo">
+            <img src="gym_logo.png" alt="Gym For You Logo">
+            <span>Gym <span>For You</span></span>
+        </div>
+        <nav>
+            <ul id="navMenu">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#equipment">المعدات</a></li>
+                <li><a href="#plans">الباقات</a></li>
+                <li><a href="#register">التسجيل</a></li>
+                <li><a href="#location">الموقع</a></li>
+            </ul>
+        </nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- ============================================
+         HERO SECTION
+    ============================================ -->
+    <section class="hero" id="home">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="gym_promo.mp4" type="video/mp4">
+        </video>
+        <img class="hero-mobile-bg" src="gym_mobile_bg.jpg" alt="Gym Background">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Gym <span>For You</span></h1>
+            <p>اكتشف قوّتك الحقيقية في أجواء احترافية مع أحدث المعدات وأفضل المدربين</p>
+            <a href="#register" class="hero-btn">ابدأ رحلتك الآن</a>
+        </div>
+    </section>
+
+    <!-- ============================================
+         EQUIPMENT SECTION
+    ============================================ -->
+    <section id="equipment">
+        <div class="section-title">
+            <h2>معداتنا <span>الاحترافية</span></h2>
+            <p>مجموعة واسعة من أحدث الأجهزة الرياضية لتغطية جميع احتياجاتك</p>
+            <div class="line"></div>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">الكل</button>
+            <button class="filter-btn" data-filter="cardio">Cardio</button>
+            <button class="filter-btn" data-filter="weights">Weights</button>
+            <button class="filter-btn" data-filter="machines">Machines</button>
+        </div>
+
+        <div class="equipment-grid" id="equipmentGrid">
+            <div class="equipment-card show-card" data-category="cardio">
+                <img src="c1.jpg" alt="Treadmill" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">c1.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Treadmill</h3>
+                    <span class="category-tag">Cardio</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="cardio">
+                <img src="c2.jpg" alt="Elliptical" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">c2.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Elliptical</h3>
+                    <span class="category-tag">Cardio</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="cardio">
+                <img src="c3.jpg" alt="Spinning Bike" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">c3.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Spinning Bike</h3>
+                    <span class="category-tag">Cardio</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="cardio">
+                <img src="c4.jpg" alt="Rowing Machine" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">c4.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Rowing Machine</h3>
+                    <span class="category-tag">Cardio</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="weights">
+                <img src="w1.jpg" alt="Dumbbells Set" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">w1.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Dumbbells Set</h3>
+                    <span class="category-tag">Weights</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="weights">
+                <img src="w2.jpg" alt="Barbells" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">w2.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Barbells</h3>
+                    <span class="category-tag">Weights</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="weights">
+                <img src="w3.jpg" alt="Kettlebells" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">w3.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Kettlebells</h3>
+                    <span class="category-tag">Weights</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="weights">
+                <img src="w4.jpg" alt="Bench Press" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">w4.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Bench Press</h3>
+                    <span class="category-tag">Weights</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m1.jpg" alt="Leg Press" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m1.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Leg Press</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m2.jpg" alt="Chest Press" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m2.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Chest Press</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m3.jpg" alt="Lat Pulldown" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m3.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Lat Pulldown</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m4.jpg" alt="Smith Machine" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m4.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Smith Machine</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m5.jpg" alt="Leg Extension" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m5.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Leg Extension</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m6.jpg" alt="Pec Deck" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m6.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Pec Deck</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m7.jpg" alt="Shoulder Press" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m7.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Shoulder Press</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m8.jpg" alt="Cable Crossover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m8.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Cable Crossover</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m9.jpg" alt="Hack Squat" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m9.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Hack Squat</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+            <div class="equipment-card show-card" data-category="machines">
+                <img src="m10.jpg" alt="Seated Row" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="img-placeholder" style="display:none"><div style="text-align:center"><i class="fas fa-image"></i><br><span style="font-size:0.8rem">m10.jpg</span></div></div>
+                <div class="card-info">
+                    <h3>Seated Row</h3>
+                    <span class="category-tag">Machines</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PRICING SECTION
+    ============================================ -->
+    <section id="plans">
+        <div class="section-title">
+            <h2>باقات <span>الاشتراك</span></h2>
+            <p>اختر الباقة المناسبة لك وابدأ رحلتك نحو لياقة أفضل</p>
+            <div class="line"></div>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>شهر واحد</h3>
+                <div class="price">250 <span>درهم</span></div>
+                <span class="save">اشتراك مرن</span>
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> دخول غير محدود</li>
+                    <li><i class="fas fa-check"></i> جميع الأجهزة</li>
+                    <li><i class="fas fa-check"></i> خزانة شخصية</li>
+                    <li><i class="fas fa-check"></i> دش وحمام</li>
+                </ul>
+                <button class="pricing-btn" onclick="selectPlan('شهر واحد', 250)">اختيار الباقة</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>3 أشهر</h3>
+                <div class="price">600 <span>درهم</span></div>
+                <span class="save">توفير 150 درهم</span>
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> دخول غير محدود</li>
+                    <li><i class="fas fa-check"></i> جميع الأجهزة</li>
+                    <li><i class="fas fa-check"></i> خزانة شخصية</li>
+                    <li><i class="fas fa-check"></i> دش وحمام</li>
+                </ul>
+                <button class="pricing-btn" onclick="selectPlan('3 أشهر', 600)">اختيار الباقة</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>6 أشهر</h3>
+                <div class="price">1100 <span>درهم</span></div>
+                <span class="save">توفير 400 درهم</span>
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> دخول غير محدود</li>
+                    <li><i class="fas fa-check"></i> جميع الأجهزة</li>
+                    <li><i class="fas fa-check"></i> خزانة شخصية</li>
+                    <li><i class="fas fa-check"></i> دش وحمام</li>
+                    <li><i class="fas fa-check"></i> جلسة تقييم مجانية</li>
+                </ul>
+                <button class="pricing-btn" onclick="selectPlan('6 أشهر', 1100)">اختيار الباقة</button>
+            </div>
+
+            <div class="pricing-card featured">
+                <div class="badge">العرض الملكي</div>
+                <h3>سنة واحدة</h3>
+                <div class="price">2000 <span>درهم</span></div>
+                <span class="save">توفير 1000 درهم</span>
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> دخول غير محدود</li>
+                    <li><i class="fas fa-check"></i> جميع الأجهزة</li>
+                    <li><i class="fas fa-check"></i> خزانة شخصية</li>
+                    <li><i class="fas fa-check"></i> دش وحمام</li>
+                    <li><i class="fas fa-check"></i> جلسة تقييم مجانية</li>
+                    <li><i class="fas fa-check"></i> خصم 10% على المكملات</li>
+                </ul>
+                <button class="pricing-btn" onclick="selectPlan('سنة واحدة (العرض الملكي)', 2000)">اختيار الباقة</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         REGISTRATION SECTION
+    ============================================ -->
+    <section id="register">
+        <div class="section-title">
+            <h2>سجل <span>الآن</span></h2>
+            <p>املأ بياناتك وسنقوم بالتواصل معك مباشرة عبر واتساب</p>
+            <div class="line"></div>
+        </div>
+
+        <div class="reg-form">
+            <div class="form-group">
+                <label for="regName">الاسم الكامل</label>
+                <input type="text" id="regName" placeholder="أدخل اسمك الكامل">
+            </div>
+            <div class="form-group">
+                <label for="regAge">السن</label>
+                <input type="number" id="regAge" placeholder="أدخل سنك" min="12" max="80">
+            </div>
+            <div class="form-group">
+                <label for="regPlan">نوع الاشتراك</label>
+                <select id="regPlan">
+                    <option value="">اختر الباقة</option>
+                    <option value="شهر واحد - 250 درهم">شهر واحد - 250 درهم</option>
+                    <option value="3 أشهر - 600 درهم">3 أشهر - 600 درهم</option>
+                    <option value="6 أشهر - 1100 درهم">6 أشهر - 1100 درهم</option>
+                    <option value="سنة واحدة (العرض الملكي) - 2000 درهم">سنة واحدة (العرض الملكي) - 2000 درهم</option>
+                </select>
+            </div>
+            <button class="whatsapp-btn" onclick="sendWhatsApp()">
+                <i class="fab fa-whatsapp"></i>
+                تأكيد التسجيل عبر واتساب
+            </button>
+        </div>
+    </section>
+
+    <!-- ============================================
+         MAP SECTION
+    ============================================ -->
+    <section id="location">
+        <div class="section-title">
+            <h2>موقع <span>الصالة</span></h2>
+            <p>تفضل بزيارتنا في موقعنا الاستراتيجي</p>
+            <div class="line"></div>
+        </div>
+        <div class="map-container">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106376.56000803275!2d-7.669394!3d33.5731104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7cd4778aa113b%3A0xb06c1d84f310fd3!2sCasablanca%2C%20Morocco!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+    ============================================ -->
+    <footer>
+        <div class="footer-logo">Gym <span>For You</span></div>
+        <p>صالة رياضية احترافية في قلب المدينة</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p><i class="fas fa-phone" style="margin-left: 8px;"></i> +212 682 378 353</p>
+        <p><i class="fas fa-envelope" style="margin-left: 8px;"></i> info@gymforyou.ma</p>
+        <div class="copyright">
+            <p>© 2026 Gym For You. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         FLOATING WHATSAPP
+    ============================================ -->
+    <a href="https://wa.me/212682378353" class="floating-whatsapp" target="_blank" title="تواصل معنا عبر واتساب">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- ============================================
+         SCROLL TO TOP
+    ============================================ -->
+    <button class="scroll-top" id="scrollTop" title="العودة للأعلى">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- ============================================
+         JAVASCRIPT — كل الكود داخل window.onload
+         لضمان تحميل DOM قبل تنفيذ أي سطر
+    ============================================ -->
+    <script>
+        window.onload = function () {
+
+            /* ===== MOBILE MENU ===== */
+            var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            var navMenu = document.getElementById('navMenu');
+
+            mobileMenuBtn.addEventListener('click', function () {
+                navMenu.classList.toggle('active');
+                var icon = mobileMenuBtn.querySelector('i');
+                if (icon.classList.contains('fa-bars')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            document.querySelectorAll('#navMenu a').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    navMenu.classList.remove('active');
+                    var icon = mobileMenuBtn.querySelector('i');
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                });
+            });
+
+            /* ===== HEADER SCROLL EFFECT ===== */
+            var header = document.getElementById('header');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 50) {
+                    header.style.background = 'rgba(5, 5, 5, 0.98)';
+                    header.style.padding = '10px 40px';
+                } else {
+                    header.style.background = 'rgba(5, 5, 5, 0.95)';
+                    header.style.padding = '15px 40px';
+                }
+            });
+
+            /* ===== EQUIPMENT FILTERS ===== */
+            var filterBtns = document.querySelectorAll('.filter-btn');
+            var equipmentCards = document.querySelectorAll('.equipment-card');
+
+            function applyFilter(filterValue) {
+                equipmentCards.forEach(function (card) {
+                    var category = card.getAttribute('data-category');
+                    if (filterValue === 'all' || category === filterValue) {
+                        card.classList.remove('hide-card');
+                        card.classList.add('show-card');
+                    } else {
+                        card.classList.remove('show-card');
+                        card.classList.add('hide-card');
+                    }
+                });
+            }
+
+            filterBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    filterBtns.forEach(function (b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    applyFilter(btn.getAttribute('data-filter'));
+                });
+            });
+
+            /* ===== SCROLL TO TOP ===== */
+            var scrollTopBtn = document.getElementById('scrollTop');
+
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 500) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+        }; // end window.onload
+
+        /* ===== SELECT PLAN (inline onclick — يعمل بعد تحميل الصفحة) ===== */
+        function selectPlan(planName, price) {
+            var regPlan = document.getElementById('regPlan');
+            var targetValue = planName + ' - ' + price + ' درهم';
+
+            // تطابق مع قيم الـ <option>
+            var options = regPlan.options;
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].value === targetValue) {
+                    regPlan.value = targetValue;
+                    break;
+                }
+            }
+
+            // انتقال سلس لقسم التسجيل
+            document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /* ===== SEND WHATSAPP ===== */
+        function sendWhatsApp() {
+            var name = document.getElementById('regName').value.trim();
+            var age  = document.getElementById('regAge').value.trim();
+            var plan = document.getElementById('regPlan').value;
+
+            if (!name) {
+                alert('الرجاء إدخال الاسم الكامل');
+                document.getElementById('regName').focus();
+                return;
+            }
+            if (!age) {
+                alert('الرجاء إدخال السن');
+                document.getElementById('regAge').focus();
+                return;
+            }
+            if (!plan) {
+                alert('الرجاء اختيار نوع الاشتراك');
+                document.getElementById('regPlan').focus();
+                return;
+            }
+
+            var message =
+                'مرحباً، أريد التسجيل في Gym For You\n\n' +
+                '👤 الاسم: ' + name + '\n' +
+                '🎂 السن: ' + age + '\n' +
+                '📋 الباقة: ' + plan + '\n\n' +
+                'شكراً!';
+
+            var whatsappUrl = 'https://wa.me/212682378353?text=' + encodeURIComponent(message);
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+
+</body>
+</html>
